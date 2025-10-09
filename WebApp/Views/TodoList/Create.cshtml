@@ -1,0 +1,15 @@
+@model WebApp.DataClasses.TodoList
+
+<h2>Create Todo List</h2>
+
+<form asp-action="Create" method="post">
+	<div class="form-group">
+		<label asp-for="Title"></label>
+		<input asp-for="Title" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label asp-for="Description"></label>
+		<input asp-for="Description" class="form-control" />
+	</div>
+	<button type="submit" class="btn btn-primary">Save</button>
+</form>

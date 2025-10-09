@@ -1,7 +1,14 @@
+using WebApp.Services;
+using WebApp.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<ITodoListWebApiService, TodoListWebApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7063/");
+});
 
 var app = builder.Build();
 
