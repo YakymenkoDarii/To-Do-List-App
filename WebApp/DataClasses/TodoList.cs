@@ -8,5 +8,5 @@ public class TodoList
 
     public string Description { get; set; }
 
-    //public List<TodoTask> Tasks { get; set; } = new();
+    public List<TodoTask> Tasks { get; set; } = new();
 }
