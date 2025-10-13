@@ -1,7 +1,8 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.DataClasses;
+using WebApp.Models; // Include the namespace for the ViewModel
 using WebApp.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace WebApp.Controllers;
 
@@ -23,32 +24,60 @@ public class TodoListController : Controller
     public IActionResult Create() => this.View();
 
     [HttpPost]
-    public async Task<IActionResult> Create(TodoList model)
+    public async Task<IActionResult> Create(TodoListWebApiModel model) // Use ViewModel here
     {
         if (!this.ModelState.IsValid)
         {
             return this.View(model);
         }
 
-        await this.service.CreateAsync(model);
+        // Map from ViewModel to Data Class
+        var todoList = new TodoList
+        {
+            Title = model.Title,
+            Description = model.Description
+        };
+
+        await this.service.CreateAsync(todoList);
         return this.RedirectToAction(nameof(this.Index));
     }
 
     public async Task<IActionResult> Edit(int id)
     {
         var list = await this.service.GetByIdAsync(id);
-        return list == null ? this.NotFound() : this.View(list);
+        if (list == null)
+        {
+            return this.NotFound();
+        }
+
+        // Map from Data Class to ViewModel for the view
+        var model = new TodoListWebApiModel
+        {
+            Id = list.Id,
+            Title = list.Title,
+            Description = list.Description
+        };
+
+        return this.View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(TodoList model)
+    public async Task<IActionResult> Edit(TodoListWebApiModel model) // Use ViewModel here
     {
         if (!this.ModelState.IsValid)
         {
             return this.View(model);
         }
 
-        await this.service.UpdateAsync(model);
+        // Map from ViewModel to Data Class
+        var todoList = new TodoList
+        {
+            Id = model.Id,
+            Title = model.Title,
+            Description = model.Description
+        };
+
+        await this.service.UpdateAsync(todoList);
         return this.RedirectToAction(nameof(this.Index));
     }
 
@@ -56,5 +85,27 @@ public class TodoListController : Controller
     {
         await this.service.DeleteAsync(id);
         return this.RedirectToAction(nameof(this.Index));
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var todoListWithTasks = await this.service.GetByIdAsync(id); // Assuming this returns the list with its tasks
+
+        if (todoListWithTasks == null)
+        {
+            return NotFound();
+        }
+
+        // 2. Map the data to your new, specific ViewModel
+        var viewModel = new TodoListDetailsViewModel
+        {
+            Id = todoListWithTasks.Id,
+            Title = todoListWithTasks.Title,
+            Description = todoListWithTasks.Description,
+            Tasks = todoListWithTasks.Tasks // Pass the tasks along
+        };
+
+        // 3. Pass the new ViewModel to the view
+        return View(viewModel);
     }
 }

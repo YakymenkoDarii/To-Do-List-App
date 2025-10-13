@@ -30,7 +30,6 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
         this.context.SaveChanges();
 
         todoTask.Id = entity.Id;
-
     }
 
     public bool Delete(int id)

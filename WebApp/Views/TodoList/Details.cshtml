@@ -1,0 +1,51 @@
+@model WebApp.Models.TodoListDetailsViewModel
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<a asp-controller="TodoList" asp-action="Index" class="btn btn-outline-secondary btn-sm mb-3">
+	&larr; Back to List
+</a>
+
+<div>
+	<h2>@Model.Title</h2>
+	<p class="text-muted">@Model.Description</p>
+</div>
+
+<hr />
+
+<h4>Tasks</h4>
+@* This code doesn't need to change at all! *@
+@if (Model.Tasks != null && Model.Tasks.Any())
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Task Description</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var task in Model.Tasks)
+			{
+				<tr>
+					<td>@task.Description</td>
+					<td class="text-right">
+						<a asp-controller="TodoTask" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-secondary btn-sm">Edit</a>
+						<a asp-controller="TodoTask" asp-action="Delete" asp-route-id="@task.Id" class="btn btn-danger btn-sm">Delete</a>
+						<a asp-controller="TodoTask" asp-action="Index" asp-route-id="@task.Id" class="btn btn-primary btn-sm">View Details</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<p>No tasks have been added to this list yet.</p>
+}
+
+<hr />
+
+<a asp-controller="TodoTask" asp-action="Create" asp-route-todoListId="@Model.Id" class="btn btn-primary">Add New Task</a>
