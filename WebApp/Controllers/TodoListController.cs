@@ -35,7 +35,7 @@ public class TodoListController : Controller
         var todoList = new TodoList
         {
             Title = model.Title,
-            Description = model.Description
+            Description = model.Description,
         };
 
         await this.service.CreateAsync(todoList);
@@ -55,7 +55,7 @@ public class TodoListController : Controller
         {
             Id = list.Id,
             Title = list.Title,
-            Description = list.Description
+            Description = list.Description,
         };
 
         return this.View(model);
@@ -74,7 +74,7 @@ public class TodoListController : Controller
         {
             Id = model.Id,
             Title = model.Title,
-            Description = model.Description
+            Description = model.Description,
         };
 
         await this.service.UpdateAsync(todoList);
@@ -102,10 +102,10 @@ public class TodoListController : Controller
             Id = todoListWithTasks.Id,
             Title = todoListWithTasks.Title,
             Description = todoListWithTasks.Description,
-            Tasks = todoListWithTasks.Tasks // Pass the tasks along
+            Tasks = todoListWithTasks.Tasks, // Pass the tasks along
         };
 
         // 3. Pass the new ViewModel to the view
-        return View(viewModel);
+        return this.View(viewModel);
     }
 }

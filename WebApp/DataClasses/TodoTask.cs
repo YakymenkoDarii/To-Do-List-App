@@ -1,4 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WebApp.DataClasses;
+
+public enum TaskStatus
+{
+    [Display(Name = "Not Started")]
+    NotStarted,
+
+    [Display(Name = "In Progress")]
+    InProgress,
+
+    Completed
+}
 
 public class TodoTask
 {
@@ -10,7 +23,11 @@ public class TodoTask
 
     public DateTime DueTo { get; set; }
 
-    public bool IsOverdue { get; set; }
+    public bool IsOverdue => DueTo < DateTime.UtcNow && Status != TaskStatus.Completed;
+
+    public DateTime CreatedAt { get; set; }
+
+    public TaskStatus Status { get; set; }
 
     public int TodoListId { get; set; }
 

@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApi.Entities;
 
+public enum TaskStatus
+{
+    NotStarted,
+    InProgress,
+    Completed,
+}
+
 public class TodoTaskEntity
 {
     [Key]
@@ -16,8 +23,14 @@ public class TodoTaskEntity
 
     public bool IsOverdue { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+
+    public TaskStatus Status { get; set; }
+
     [ForeignKey("TodoList")]
     public int TodoListId { get; set; }
 
     public TodoListEntity TodoList { get; set; }
+
+   // public string? AssignedUserId { get; set; }
 }

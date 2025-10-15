@@ -26,19 +26,19 @@
 				<th></th>
 			</tr>
 		</thead>
-		<tbody>
-			@foreach (var task in Model.Tasks)
-			{
-				<tr>
-					<td>@task.Description</td>
-					<td class="text-right">
-						<a asp-controller="TodoTask" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-secondary btn-sm">Edit</a>
-						<a asp-controller="TodoTask" asp-action="Delete" asp-route-id="@task.Id" class="btn btn-danger btn-sm">Delete</a>
-						<a asp-controller="TodoTask" asp-action="Index" asp-route-id="@task.Id" class="btn btn-primary btn-sm">View Details</a>
-					</td>
-				</tr>
-			}
-		</tbody>
+			<tbody>
+				@foreach (var task in Model.Tasks)
+				{
+					<tr class="@(task.IsOverdue ? "table-danger" : "")">
+						<td>@task.Description</td>
+						<td class="text-right">
+							<a asp-controller="TodoTask" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-secondary btn-sm">Edit</a>
+							<a asp-controller="TodoTask" asp-action="Delete" asp-route-id="@task.Id" class="btn btn-danger btn-sm">Delete</a>
+							<a asp-controller="TodoTask" asp-action="Index" asp-route-id="@task.Id" class="btn btn-primary btn-sm">View Details</a>
+						</td>
+					</tr>
+				}
+			</tbody>
 	</table>
 }
 else

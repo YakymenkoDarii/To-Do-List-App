@@ -1,45 +1,46 @@
 @model WebApp.Models.TodoTaskWebApiModel
 @{
-	// Dynamically set the page title to the task's title
-	ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Title;
 }
 
-@* 1. Navigation back to the parent list is essential for good UX *@
 <a asp-controller="TodoList" asp-action="Details" asp-route-id="@Model.TodoListId" class="btn btn-outline-secondary btn-sm mb-3">
-	&larr; Back to Parent List
+    &larr; Back to Parent List
 </a>
 
-@* 2. Main content area displaying the task's details *@
 <div class="card">
-	<div class="card-header">
-		<h2>@Model.Title</h2>
-	</div>
-	<div class="card-body">
-		<h5 class="card-title text-muted">Description</h5>
-		<p class="card-text">@Model.Description</p>
+    <div class="card-header">
+        <h2>@Model.Title</h2>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title text-muted">Description</h5>
+        <p class="card-text">@Model.Description</p>
+        <hr />
 
-		<hr />
+        <dl class="row">
+            <dt class="col-sm-3">Created On</dt>
+            <dd class="col-sm-9">@Model.CreatedAt.ToString("g")</dd>
 
-		<dl class="row">
-			<dt class="col-sm-3">Due Date</dt>
-			<dd class="col-sm-9">@Model.DueTo.ToShortDateString()</dd>
+            <dt class="col-sm-3">Due Date</dt>
+            <dd class="col-sm-9">@Model.DueTo.ToShortDateString()</dd>
 
-			<dt class="col-sm-3">Status</dt>
-			<dd class="col-sm-9">
-				@if (Model.IsOverdue)
-				{
-					<span class="badge bg-danger">Overdue</span>
-				}
-				else
-				{
-					<span class="badge bg-success">On track</span>
-				}
-			</dd>
-		</dl>
-	</div>
-	<div class="card-footer text-right">
-		@* 3. Action buttons to manage this specific task *@
-		<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
-		<a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-	</div>
+            <dt class="col-sm-3">Current Status</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Status)</dd>
+
+            <dt class="col-sm-3">Overdue</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsOverdue)
+                {
+                    <span class="badge bg-danger">Overdue</span>
+                }
+                else
+                {
+                    <span class="badge bg-success">On track</span>
+                }
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer text-right">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    </div>
 </div>

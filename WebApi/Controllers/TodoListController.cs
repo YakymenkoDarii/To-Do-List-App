@@ -31,7 +31,6 @@ public class TodoListController : Controller
                 Title = t.Title,
                 Description = t.Description,
                 DueTo = t.DueTo,
-                IsOverdue = t.IsOverdue,
                 TodoListId = t.TodoListId,
             }).ToList(),
         }).ToList();
@@ -59,7 +58,6 @@ public class TodoListController : Controller
                 Title = t.Title,
                 Description = t.Description,
                 DueTo = t.DueTo,
-                IsOverdue = t.IsOverdue,
                 TodoListId = t.TodoListId,
             }).ToList(),
         };

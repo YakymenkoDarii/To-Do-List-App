@@ -21,7 +21,8 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
         {
             Title = todoTask.Title,
             Description = todoTask.Description,
-            IsOverdue = todoTask.IsOverdue,
+            CreatedAt = todoTask.CreatedAt,
+            Status = todoTask.Status,
             DueTo = todoTask.DueTo,
             TodoListId = todoTask.TodoListId,
         };
@@ -51,10 +52,10 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
     {
         return this.context.TodoTasks.Select(t => new TodoTask
         {
-            Id = t.Id,
             Title = t.Title,
             Description = t.Description,
-            IsOverdue = t.IsOverdue,
+            CreatedAt = t.CreatedAt,
+            Status = t.Status,
             DueTo = t.DueTo,
             TodoListId = t.TodoListId,
         }).ToList();
@@ -69,7 +70,8 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             Title = entity.Title,
             Description = entity.Description,
             DueTo = entity.DueTo,
-            IsOverdue = entity.IsOverdue,
+            CreatedAt = entity.CreatedAt,
+            Status = entity.Status,
             TodoListId = entity.TodoListId,
         };
     }
@@ -86,7 +88,8 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             Title = t.Title,
             Description = t.Description,
             DueTo = t.DueTo,
-            IsOverdue = t.IsOverdue,
+            CreatedAt = t.CreatedAt,
+            Status = t.Status,
             TodoListId = t.TodoListId,
         }).ToList();
     }
@@ -98,7 +101,8 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             Id = todoTask.Id,
             Title = todoTask.Title,
             Description = todoTask.Description,
-            IsOverdue = todoTask.IsOverdue,
+            CreatedAt = todoTask.CreatedAt,
+            Status = todoTask.Status,
             DueTo = todoTask.DueTo,
             TodoListId = todoTask.TodoListId,
         };

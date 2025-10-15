@@ -26,7 +26,8 @@ public class TodoTaskController : Controller
             Title = item.Title,
             Description = item.Description,
             DueTo = item.DueTo,
-            IsOverdue = item.IsOverdue,
+            CreatedAt = item.CreatedAt,
+            Status = item.Status,
             TodoListId = item.TodoListId,
         }).ToList();
 
@@ -49,7 +50,8 @@ public class TodoTaskController : Controller
             Title = todoTask.Title,
             Description = todoTask.Description,
             DueTo = todoTask.DueTo,
-            IsOverdue = todoTask.IsOverdue,
+            CreatedAt = todoTask.CreatedAt,
+            Status = todoTask.Status,
             TodoListId = todoTask.TodoListId,
         };
 
@@ -72,7 +74,8 @@ public class TodoTaskController : Controller
             Title = model.Title,
             Description = model.Description,
             DueTo = model.DueTo,
-            IsOverdue = model.IsOverdue,
+            CreatedAt = model.CreatedAt,
+            Status = model.Status,
             TodoListId = model.TodoListId,
         }).ToList();
 
@@ -93,6 +96,8 @@ public class TodoTaskController : Controller
             Description = model.Description,
             DueTo = model.DueTo,
             IsOverdue = model.IsOverdue,
+            CreatedAt = model.CreatedAt,
+            Status = model.Status,
             TodoListId = model.TodoListId,
         };
 
@@ -129,6 +134,8 @@ public class TodoTaskController : Controller
             Description = model.Description,
             DueTo = model.DueTo,
             IsOverdue = model.IsOverdue,
+            CreatedAt = model.CreatedAt,
+            Status = model.Status,
             TodoListId = model.TodoListId,
         };
 

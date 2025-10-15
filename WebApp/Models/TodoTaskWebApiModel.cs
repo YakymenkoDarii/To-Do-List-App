@@ -10,7 +10,11 @@ public class TodoTaskWebApiModel
 
     public DateTime DueTo { get; set; }
 
-    public bool IsOverdue { get; set; }
+    public bool IsOverdue => DueTo < DateTime.UtcNow && Status != DataClasses.TaskStatus.Completed;
+
+    public DateTime CreatedAt { get; set; }
+
+    public DataClasses.TaskStatus Status { get; set; }
 
     public int TodoListId { get; set; }
 }

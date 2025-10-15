@@ -10,7 +10,11 @@ public class TodoTaskModel
 
     public DateTime DueTo { get; set; }
 
-    public bool IsOverdue { get; set; }
+    public bool IsOverdue => DueTo < DateTime.UtcNow && Status != Entities.TaskStatus.Completed;
+
+    public DateTime CreatedAt { get; set; }
+
+    public Entities.TaskStatus Status { get; set; }
 
     public int TodoListId { get; set; }
 }

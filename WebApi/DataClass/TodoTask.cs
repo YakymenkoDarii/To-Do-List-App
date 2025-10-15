@@ -1,5 +1,3 @@
-using WebApi.Entities;
-
 namespace WebApi.DataClass;
 
 public class TodoTask
@@ -13,6 +11,10 @@ public class TodoTask
     public DateTime DueTo { get; set; }
 
     public bool IsOverdue { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public Entities.TaskStatus Status { get; set; }
 
     public int TodoListId { get; set; }
 }
