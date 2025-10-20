@@ -7,7 +7,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TodoTaskController : Controller
+public class TodoTaskController : ControllerBase
 {
     private readonly ITodoTaskDatabaseService todoTaskDatabaseService;
 
