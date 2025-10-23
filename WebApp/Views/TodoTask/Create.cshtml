@@ -1,46 +1,53 @@
 @model WebApp.Models.TodoTaskWebApiModel
 @using WebApp.DataClasses;
 @{
-    ViewData["Title"] = "Create Task";
+	ViewData["Title"] = "Create Task";
 }
 
 <h2>Create a New Task</h2>
 <hr />
 
 <div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create" method="post">
-            <input type="hidden" asp-for="TodoListId" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<div class="col-md-6">
+		<form asp-action="Create" method="post">
+			<input type="hidden" asp-for="TodoListId" />
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
+			<div class="form-group mb-3">
+				<label asp-for="Title" class="control-label"></label>
+				<input asp-for="Title" class="form-control" />
+				<span asp-validation-for="Title" class="text-danger"></span>
+			</div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+			<div class="form-group mb-3">
+				<label asp-for="Description" class="control-label"></label>
+				<textarea asp-for="Description" class="form-control" rows="3"></textarea>
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
 
-            <div class="form-group mb-3">
-                <label asp-for="DueTo" class="control-label">Due Date</label>
-                <input asp-for="DueTo" type="date" class="form-control" value="@Model.DueTo.ToString("yyyy-MM-dd")" />
-                <span asp-validation-for="DueTo" class="text-danger"></span>
-            </div>
+			<div class="form-group mb-3">
+				<label asp-for="DueTo" class="control-label">Due Date</label>
+				<input asp-for="DueTo" type="date" class="form-control" value="@Model.DueTo.ToString("yyyy-MM-dd")" />
+				<span asp-validation-for="DueTo" class="text-danger"></span>
+			</div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" asp-items="Html.GetEnumSelectList<WebApp.DataClasses.TaskStatus>()" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
+			<div class="form-group mb-3">
+				<label asp-for="Status" class="control-label"></label>
+				<select asp-for="Status" asp-items="Html.GetEnumSelectList<WebApp.DataClasses.TaskStatus>()" class="form-control"></select>
+				<span asp-validation-for="Status" class="text-danger"></span>
+			</div>
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Create</button>
-                <a asp-controller="TodoList" asp-action="Details" asp-route-id="@Model.TodoListId" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
+			<div class="form-group mb-3">
+				<label asp-for="AssignedToUserName" class="control-label"></label>
+				<select asp-for="AssignedToUserName" asp-items="@Model.Users" class="form-control">
+					<option value="">-- Unassigned --</option>
+				</select>
+				<span asp-validation-for="AssignedToUserName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Create</button>
+				<a asp-controller="TodoList" asp-action="Details" asp-route-id="@Model.TodoListId" class="btn btn-secondary">Cancel</a>
+			</div>
+		</form>
+	</div>
 </div>

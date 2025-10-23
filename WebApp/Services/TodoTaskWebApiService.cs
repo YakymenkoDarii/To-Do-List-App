@@ -1,41 +1,47 @@
 using WebApp.DataClasses;
+using WebApp.Services.Base;
 using WebApp.Services.Interfaces;
 
-namespace WebApp.Services;
-
-public class TodoTaskWebApiService : ITodoTaskWebApiService
+namespace WebApp.Services
 {
-    private const string ApiBaseRoute = "api/todotask";
-    private readonly HttpClient httpClient;
-
-    public TodoTaskWebApiService(HttpClient httpClient)
+    public class TodoTaskWebApiService : AbstractService, ITodoTaskWebApiService
     {
-        this.httpClient = httpClient;
-    }
+        private const string ApiBaseRoute = "api/todotask";
 
-    public async Task<IEnumerable<TodoTask>> GetAllAsync()
-    {
-        var result = await this.httpClient.GetFromJsonAsync<IEnumerable<TodoTask>>(ApiBaseRoute);
-        return result ?? Enumerable.Empty<TodoTask>();
-    }
+        public TodoTaskWebApiService(IHttpClientFactory factory, IHttpContextAccessor httpAccessor)
+            : base(factory, httpAccessor)
+        {
+        }
 
-    public async Task<TodoTask?> GetByIdAsync(int id)
-    {
-        return await this.httpClient.GetFromJsonAsync<TodoTask>($"{ApiBaseRoute}/{id}");
-    }
+        public async Task<IEnumerable<TodoTask>> GetAllAsync()
+        {
+            using var httpClient = this.CreateClient();
+            var result = await httpClient.GetFromJsonAsync<IEnumerable<TodoTask>>(ApiBaseRoute);
+            return result ?? Enumerable.Empty<TodoTask>();
+        }
 
-    public async Task CreateAsync(TodoTask todoTask)
-    {
-        await this.httpClient.PostAsJsonAsync(ApiBaseRoute, todoTask);
-    }
+        public async Task<TodoTask?> GetByIdAsync(int id)
+        {
+            using var httpClient = this.CreateClient();
+            return await httpClient.GetFromJsonAsync<TodoTask>($"{ApiBaseRoute}/{id}");
+        }
 
-    public async Task UpdateAsync(TodoTask todoTask)
-    {
-        await this.httpClient.PutAsJsonAsync($"{ApiBaseRoute}/{todoTask.Id}", todoTask);
-    }
+        public async Task CreateAsync(TodoTask todoTask)
+        {
+            using var httpClient = this.CreateClient();
+            await httpClient.PostAsJsonAsync(ApiBaseRoute, todoTask);
+        }
 
-    public async Task DeleteAsync(int id)
-    {
-        await this.httpClient.DeleteAsync($"{ApiBaseRoute}/{id}");
+        public async Task UpdateAsync(TodoTask todoTask)
+        {
+            using var httpClient = this.CreateClient();
+            await httpClient.PutAsJsonAsync($"{ApiBaseRoute}/{todoTask.Id}", todoTask);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            using var httpClient = this.CreateClient();
+            await httpClient.DeleteAsync($"{ApiBaseRoute}/{id}");
+        }
     }
 }

@@ -27,10 +27,10 @@ public class TodoTaskEntity
 
     public TaskStatus Status { get; set; }
 
+    public string AssignedToId { get; set; }
+
     [ForeignKey("TodoList")]
     public int TodoListId { get; set; }
 
     public TodoListEntity TodoList { get; set; }
-
-   // public string? AssignedUserId { get; set; }
 }

@@ -29,6 +29,8 @@ public class TodoTask
 
     public TaskStatus Status { get; set; }
 
+    public string AssignedToId { get; set; }
+
     public int TodoListId { get; set; }
 
     public TodoList TodoList { get; set; }

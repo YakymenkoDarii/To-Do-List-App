@@ -1,16 +1,23 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebApp.DataClasses;
 using WebApp.Models;
 using WebApp.Services.Interfaces;
 
 namespace WebApp.Controllers;
 
+[Authorize]
 public class TodoTaskController : Controller
 {
     private readonly ITodoTaskWebApiService service;
+    private readonly UserManager<IdentityUser> userManager;
 
-    public TodoTaskController(ITodoTaskWebApiService service)
+    public TodoTaskController(UserManager<IdentityUser> userManager, ITodoTaskWebApiService service)
     {
+        this.userManager = userManager;
         this.service = service;
     }
 
@@ -40,13 +47,14 @@ public class TodoTaskController : Controller
     }
 
     // GET: /TodoTask/Create?todoListId=1
-    public IActionResult Create(int todoListId)
+    public async Task<IActionResult> Create(int todoListId)
     {
         // Pass the parent TodoListId to the view so it knows which list this new task belongs to
         var viewModel = new TodoTaskWebApiModel
         {
             TodoListId = todoListId,
-            DueTo = DateTime.Today, // Pre-populate the date to today
+            DueTo = DateTime.Today,
+            Users = await this.GetUsersSelectList(),
         };
         return this.View(viewModel);
     }
@@ -55,12 +63,13 @@ public class TodoTaskController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(TodoTaskWebApiModel model)
     {
-        if (!this.ModelState.IsValid)
-        {
-            return this.View(model);
-        }
+        //if (!this.ModelState.IsValid)
+        //{
+        //    return this.View(model);
+        //}
 
-        // Map the view model back to the data class before sending to the service
+        var user = await this.userManager.FindByNameAsync(model.AssignedToUserName);
+
         var dataTask = new TodoTask
         {
             Title = model.Title,
@@ -68,6 +77,8 @@ public class TodoTaskController : Controller
             DueTo = model.DueTo,
             CreatedAt = DateTime.Now,
             TodoListId = model.TodoListId,
+            Status = model.Status,
+            AssignedToId = user.Id,
         };
 
         await this.service.CreateAsync(dataTask);
@@ -85,6 +96,8 @@ public class TodoTaskController : Controller
             return this.NotFound();
         }
 
+        var user = await this.userManager.FindByIdAsync(dataTask.AssignedToId);
+
         // Map the data object to the view model
         var viewModel = new TodoTaskWebApiModel
         {
@@ -95,6 +108,7 @@ public class TodoTaskController : Controller
             CreatedAt = dataTask.CreatedAt,
             Status = dataTask.Status,
             TodoListId = dataTask.TodoListId,
+            AssignedToUserName = user.UserName,
         };
 
         return this.View(viewModel);
@@ -109,6 +123,8 @@ public class TodoTaskController : Controller
             return this.View(model);
         }
 
+        var user = await this.userManager.FindByNameAsync(model.AssignedToUserName);
+
         // Map the view model back to the data class
         var dataTask = new TodoTask
         {
@@ -119,6 +135,7 @@ public class TodoTaskController : Controller
             CreatedAt = model.CreatedAt,
             Status = model.Status,
             TodoListId = model.TodoListId,
+            AssignedToId = user.Id,
         };
 
         await this.service.UpdateAsync(dataTask);
@@ -143,5 +160,17 @@ public class TodoTaskController : Controller
 
         // 3. Redirect back to the correct parent list's details page.
         return this.RedirectToAction("Details", "TodoList", new { id = taskToDelete.TodoListId });
+    }
+
+    private async Task<IEnumerable<SelectListItem>> GetUsersSelectList()
+    {
+        // Get all usernames
+        var users = await this.userManager.Users
+            .OrderBy(u => u.UserName)
+            .Select(u => u.UserName)
+            .ToListAsync();
+
+        // Create a SelectList where the value and text are both the username
+        return new SelectList(users);
     }
 }

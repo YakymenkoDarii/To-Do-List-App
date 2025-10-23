@@ -45,7 +45,7 @@ public class AccountController : Controller
         return this.RedirectToAction("Register");
     }
 
-    public IActionResult LoginUser()
+    public IActionResult Login()
     {
         return this.View();
     }
@@ -53,11 +53,6 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> LoginUser(NewUserModel userModel)
     {
-        if (!this.ModelState.IsValid)
-        {
-            return this.View(userModel);
-        }
-
         IdentityUser user = await this.userManager.FindByNameAsync(userModel.UserName);
         if (user == null || !await this.userManager.CheckPasswordAsync(user, userModel.Password))
         {
@@ -66,6 +61,7 @@ public class AccountController : Controller
 
         var claims = new List<Claim>
         {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };

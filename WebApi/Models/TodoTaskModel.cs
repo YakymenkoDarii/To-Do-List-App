@@ -16,5 +16,7 @@ public class TodoTaskModel
 
     public Entities.TaskStatus Status { get; set; }
 
+    public string AssignedToId { get; set; }
+
     public int TodoListId { get; set; }
 }

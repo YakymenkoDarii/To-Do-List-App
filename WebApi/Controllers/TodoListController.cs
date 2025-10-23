@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.DataClass;
 using WebApi.Models;
@@ -7,6 +9,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TodoListController : ControllerBase
 {
     private readonly ITodoListDatabaseService todoListDatabaseService;
@@ -25,6 +28,7 @@ public class TodoListController : ControllerBase
             Id = item.Id,
             Title = item.Title,
             Description = item.Description,
+            OwnerId = item.OwnerId,
             Tasks = item.Tasks.Select(t => new TodoTaskModel
             {
                 Id = t.Id,
@@ -32,6 +36,7 @@ public class TodoListController : ControllerBase
                 Description = t.Description,
                 DueTo = t.DueTo,
                 TodoListId = t.TodoListId,
+                AssignedToId = t.AssignedToId,
             }).ToList(),
         }).ToList();
 
@@ -52,6 +57,7 @@ public class TodoListController : ControllerBase
             Id = todoList.Id,
             Title = todoList.Title,
             Description = todoList.Description,
+            OwnerId = todoList.OwnerId,
             Tasks = todoList.Tasks.Select(t => new TodoTaskModel
             {
                 Id = t.Id,
@@ -59,6 +65,7 @@ public class TodoListController : ControllerBase
                 Description = t.Description,
                 DueTo = t.DueTo,
                 TodoListId = t.TodoListId,
+                AssignedToId = t.AssignedToId,
             }).ToList(),
         };
         return this.Ok(model);
@@ -76,6 +83,7 @@ public class TodoListController : ControllerBase
         {
             Title = model.Title,
             Description = model.Description,
+            OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier),
         };
 
         this.todoListDatabaseService.Add(todo);
@@ -85,6 +93,7 @@ public class TodoListController : ControllerBase
             Id = todo.Id,
             Title = todo.Title,
             Description = todo.Description,
+            OwnerId = todo.OwnerId,
         };
 
         return this.CreatedAtAction(nameof(this.GetById), new { id = todo.Id }, resultModel);

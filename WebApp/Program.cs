@@ -12,19 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-string apiBaseAddress = "https://localhost:7063/";
+//string apiBaseAddress = "https://localhost:7063/";
 
-// Configure the list service
-builder.Services.AddHttpClient<ITodoListWebApiService, TodoListWebApiService>(client =>
-{
-    client.BaseAddress = new Uri(apiBaseAddress);
-});
+builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 
-// Configure the task service
-builder.Services.AddHttpClient<ITodoTaskWebApiService, TodoTaskWebApiService>(client =>
-{
-    client.BaseAddress = new Uri(apiBaseAddress);
-});
+builder.Services.AddScoped<ITodoListWebApiService, TodoListWebApiService>();
+builder.Services.AddScoped<ITodoTaskWebApiService, TodoTaskWebApiService>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

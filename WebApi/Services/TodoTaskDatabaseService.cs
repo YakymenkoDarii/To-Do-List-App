@@ -8,7 +8,7 @@ namespace WebApi.Services;
 
 public class TodoTaskDatabaseService : ITodoTaskDatabaseService
 {
-    private TodoListDbContext context;
+    private readonly TodoListDbContext context;
 
     public TodoTaskDatabaseService(TodoListDbContext context)
     {
@@ -25,6 +25,7 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             Status = todoTask.Status,
             DueTo = todoTask.DueTo,
             TodoListId = todoTask.TodoListId,
+            AssignedToId = todoTask.AssignedToId,
         };
 
         this.context.Add(entity);
@@ -58,6 +59,7 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             Status = t.Status,
             DueTo = t.DueTo,
             TodoListId = t.TodoListId,
+            AssignedToId = t.AssignedToId,
         }).ToList();
     }
 
@@ -73,6 +75,7 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             CreatedAt = entity.CreatedAt,
             Status = entity.Status,
             TodoListId = entity.TodoListId,
+            AssignedToId = entity.AssignedToId,
         };
     }
 
@@ -91,6 +94,7 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             CreatedAt = t.CreatedAt,
             Status = t.Status,
             TodoListId = t.TodoListId,
+            AssignedToId = t.AssignedToId,
         }).ToList();
     }
 
@@ -105,6 +109,7 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
             Status = todoTask.Status,
             DueTo = todoTask.DueTo,
             TodoListId = todoTask.TodoListId,
+            AssignedToId = todoTask.AssignedToId,
         };
 
         this.context.TodoTasks.Update(entity);

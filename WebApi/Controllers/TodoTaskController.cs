@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.DataClass;
 using WebApi.Models;
@@ -7,6 +8,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TodoTaskController : ControllerBase
 {
     private readonly ITodoTaskDatabaseService todoTaskDatabaseService;
@@ -29,6 +31,7 @@ public class TodoTaskController : ControllerBase
             CreatedAt = item.CreatedAt,
             Status = item.Status,
             TodoListId = item.TodoListId,
+            AssignedToId = item.AssignedToId,
         }).ToList();
 
         return this.Ok(models);
@@ -53,6 +56,7 @@ public class TodoTaskController : ControllerBase
             CreatedAt = todoTask.CreatedAt,
             Status = todoTask.Status,
             TodoListId = todoTask.TodoListId,
+            AssignedToId = todoTask.AssignedToId,
         };
 
         return this.Ok(model);
@@ -77,6 +81,7 @@ public class TodoTaskController : ControllerBase
             CreatedAt = model.CreatedAt,
             Status = model.Status,
             TodoListId = model.TodoListId,
+            AssignedToId = model.AssignedToId,
         }).ToList();
 
         return this.Ok(models);
@@ -99,6 +104,7 @@ public class TodoTaskController : ControllerBase
             CreatedAt = model.CreatedAt,
             Status = model.Status,
             TodoListId = model.TodoListId,
+            AssignedToId = model.AssignedToId,
         };
 
         this.todoTaskDatabaseService.Add(task);
@@ -137,6 +143,7 @@ public class TodoTaskController : ControllerBase
             CreatedAt = model.CreatedAt,
             Status = model.Status,
             TodoListId = model.TodoListId,
+            AssignedToId = model.AssignedToId,
         };
 
         this.todoTaskDatabaseService.Update(todo);

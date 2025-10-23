@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 namespace WebApp.Models;
 
 public class TodoTaskWebApiModel
@@ -15,6 +18,12 @@ public class TodoTaskWebApiModel
     public DateTime CreatedAt { get; set; }
 
     public DataClasses.TaskStatus Status { get; set; }
+
+    [Required]
+    [Display(Name = "Assign To")]
+    public string AssignedToUserName { get; set; }
+
+    public IEnumerable<SelectListItem> Users { get; set; }
 
     public int TodoListId { get; set; }
 }

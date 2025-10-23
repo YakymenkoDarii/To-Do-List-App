@@ -23,6 +23,7 @@ public class TodoListDatabaseService : ITodoListDatabaseService
         {
             Title = todoList.Title,
             Description = todoList.Description,
+            OwnerId = todoList.OwnerId,
             Tasks = todoList.Tasks.Select(t => new TodoTaskEntity
             {
                 Title = t.Title,
@@ -66,6 +67,7 @@ public class TodoListDatabaseService : ITodoListDatabaseService
                 Id = l.Id,
                 Title = l.Title,
                 Description = l.Description,
+                OwnerId = l.OwnerId,
                 Tasks = l.Tasks.Select(t => new TodoTask
                 {
                     Id = t.Id,
@@ -74,6 +76,7 @@ public class TodoListDatabaseService : ITodoListDatabaseService
                     DueTo = t.DueTo,
                     IsOverdue = t.IsOverdue,
                     TodoListId = t.TodoListId,
+                    AssignedToId = t.AssignedToId,
                 }).ToList(),
             }).ToList();
     }
@@ -94,6 +97,7 @@ public class TodoListDatabaseService : ITodoListDatabaseService
             Id = list.Id,
             Title = list.Title,
             Description = list.Description,
+            OwnerId = list.OwnerId,
             Tasks = list.Tasks.Select(t => new TodoTask
             {
                 Id = t.Id,
@@ -102,6 +106,7 @@ public class TodoListDatabaseService : ITodoListDatabaseService
                 DueTo = t.DueTo,
                 IsOverdue = t.IsOverdue,
                 TodoListId = t.TodoListId,
+                AssignedToId = t.AssignedToId,
             }).ToList(),
         };
     }
@@ -113,6 +118,7 @@ public class TodoListDatabaseService : ITodoListDatabaseService
             Id = todoList.Id,
             Title = todoList.Title,
             Description = todoList.Description,
+            OwnerId = todoList.OwnerId,
             Tasks = todoList.Tasks.Select(t => new TodoTaskEntity
             {
                 Id = t.Id,
@@ -120,6 +126,8 @@ public class TodoListDatabaseService : ITodoListDatabaseService
                 Description = t.Description,
                 DueTo = t.DueTo,
                 IsOverdue = t.IsOverdue,
+                TodoListId = t.TodoListId,
+                AssignedToId = t.AssignedToId,
             }).ToList(),
         };
 

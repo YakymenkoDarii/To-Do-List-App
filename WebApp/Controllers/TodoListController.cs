@@ -1,11 +1,14 @@
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.DataClasses;
-using WebApp.Models; // Include the namespace for the ViewModel
+using WebApp.Models;
 using WebApp.Services.Interfaces;
-using System.Threading.Tasks;
 
 namespace WebApp.Controllers;
 
+[Authorize]
 public class TodoListController : Controller
 {
     private ITodoListWebApiService service;
@@ -18,7 +21,7 @@ public class TodoListController : Controller
     public async Task<IActionResult> Index()
     {
         var lists = await this.service.GetAllAsync();
-        return this.View(lists);
+        return this.View(lists.Where(list => list.OwnerId == this.User.FindFirstValue(ClaimTypes.NameIdentifier)));
     }
 
     public IActionResult Create() => this.View();
@@ -36,6 +39,7 @@ public class TodoListController : Controller
         {
             Title = model.Title,
             Description = model.Description,
+            OwnerId = this.User.FindFirstValue(ClaimTypes.NameIdentifier),
         };
 
         await this.service.CreateAsync(todoList);
