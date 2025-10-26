@@ -53,6 +53,7 @@ public class TodoTaskDatabaseService : ITodoTaskDatabaseService
     {
         return this.context.TodoTasks.Select(t => new TodoTask
         {
+            Id = t.Id,
             Title = t.Title,
             Description = t.Description,
             CreatedAt = t.CreatedAt,

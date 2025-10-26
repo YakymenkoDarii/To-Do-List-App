@@ -13,4 +13,6 @@ public interface ITodoTaskWebApiService
     Task UpdateAsync(TodoTask todoTask);
 
     Task DeleteAsync(int id);
+
+    Task<List<TodoTask>> GetTasksForUserAsync(string userId);
 }

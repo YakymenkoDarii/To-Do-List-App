@@ -25,24 +25,30 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterUser(NewUserModel userModel)
+    public async Task<IActionResult> RegisterUser(NewUserModel model)
     {
-        if (await this.userManager.FindByEmailAsync(userModel.Email) == null)
+        if (!ModelState.IsValid)
         {
-            IdentityResult result = await this.userManager.CreateAsync(
-                new IdentityUser
-                {
-                    UserName = userModel.UserName,
-                    Email = userModel.Email,
-                },
-                userModel.Password);
-            if (result.Succeeded)
-            {
-                return this.RedirectToAction("Index", "Home");
-            }
+            // Вкажіть ім'я файлу представлення "Register"
+            return View("Register", model);
         }
 
-        return this.RedirectToAction("Register");
+        var user = new IdentityUser { UserName = model.UserName, Email = model.Email };
+        var result = await userManager.CreateAsync(user, model.Password);
+
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View("Register", model);
+        }
     }
 
     public IActionResult Login()

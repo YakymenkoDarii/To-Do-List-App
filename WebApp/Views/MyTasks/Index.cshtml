@@ -1,0 +1,74 @@
+@model WebApp.Models.MyTasksViewModel
+@using WebApp.DataClasses
+@{
+	ViewData["Title"] = "My Assigned Tasks";
+}
+
+<h2>My Assigned Tasks</h2>
+
+<form asp-action="Index" method="get" class="mb-3">
+	<div class="row">
+		<div class="col-md-4">
+			<label class="form-label">Filter by Status</label>
+			<select name="filterStatus" class="form-select" onchange="this.form.submit()">
+				<option value="">Active (Default)</option>
+
+				@foreach (var status in (WebApp.DataClasses.TaskStatus[])Enum.GetValues(typeof(WebApp.DataClasses.TaskStatus)))
+				{
+					<option value="@status" selected="@(Model.CurrentFilter == status)">@status.ToString()</option>
+				}
+			</select>
+			<input type="hidden" name="sortBy" value="@Model.CurrentSort" />
+		</div>
+	</div>
+</form>
+
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>
+				<a asp-action="Index" asp-route-sortBy="@Model.NameSortParam" asp-route-filterStatus="@Model.CurrentFilter">
+					Task Title
+				</a>
+			</th>
+			<th>
+				<a asp-action="Index" asp-route-sortBy="@Model.DateSortParam" asp-route-filterStatus="@Model.CurrentFilter">
+					Due Date
+				</a>
+			</th>
+			<th>Assigned To</th>
+
+			<th>Change Status</th>
+
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var task in Model.Tasks)
+		{
+			<tr>
+				<td>
+					<a asp-controller="TodoTask" asp-action="Index" asp-route-id="@task.Id">
+						@task.Title
+					</a>
+				</td>
+				<td>@task.DueTo.ToShortDateString()</td>
+				<td>@task.AssignedToUserName</td>
+
+				<td>
+					<form asp-action="UpdateStatus" method="post" style="min-width: 150px;">
+						<input type="hidden" name="taskId" value="@task.Id" />
+						<select name="status" asp-for="@task.Status" asp-items="Html.GetEnumSelectList<WebApp.DataClasses.TaskStatus>()"
+								class="form-select form-select-sm" onchange="this.form.submit()">
+						</select>
+					</form>
+				</td>
+
+				<td>
+					<a asp-controller="TodoTask" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-sm btn-secondary">Edit</a>
+					<a asp-controller="TodoTask" asp-action="Index" asp-route-id="@task.Id" class="btn btn-sm btn-info">Details</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

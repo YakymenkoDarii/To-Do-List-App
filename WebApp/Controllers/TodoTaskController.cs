@@ -31,6 +31,8 @@ public class TodoTaskController : Controller
             return this.NotFound();
         }
 
+        var user = await this.userManager.FindByIdAsync(dataTask.AssignedToId);
+
         // Map the data object to the view model
         var viewModel = new TodoTaskWebApiModel
         {
@@ -41,6 +43,7 @@ public class TodoTaskController : Controller
             CreatedAt = dataTask.CreatedAt,
             Status = dataTask.Status,
             TodoListId = dataTask.TodoListId,
+            AssignedToUserName = user?.UserName,
         };
 
         return this.View(viewModel);
@@ -63,11 +66,6 @@ public class TodoTaskController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(TodoTaskWebApiModel model)
     {
-        //if (!this.ModelState.IsValid)
-        //{
-        //    return this.View(model);
-        //}
-
         var user = await this.userManager.FindByNameAsync(model.AssignedToUserName);
 
         var dataTask = new TodoTask
@@ -109,6 +107,7 @@ public class TodoTaskController : Controller
             Status = dataTask.Status,
             TodoListId = dataTask.TodoListId,
             AssignedToUserName = user.UserName,
+            Users = await this.GetUsersSelectList(),
         };
 
         return this.View(viewModel);
@@ -118,11 +117,6 @@ public class TodoTaskController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(TodoTaskWebApiModel model)
     {
-        if (!this.ModelState.IsValid)
-        {
-            return this.View(model);
-        }
-
         var user = await this.userManager.FindByNameAsync(model.AssignedToUserName);
 
         // Map the view model back to the data class

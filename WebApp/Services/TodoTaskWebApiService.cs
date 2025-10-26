@@ -43,5 +43,14 @@ namespace WebApp.Services
             using var httpClient = this.CreateClient();
             await httpClient.DeleteAsync($"{ApiBaseRoute}/{id}");
         }
+
+        public async Task<List<TodoTask>> GetTasksForUserAsync(string userId)
+        {
+            using var httpClient = this.CreateClient();
+
+            var userTasks = await httpClient.GetFromJsonAsync<List<TodoTask>>($"{ApiBaseRoute}/user/{userId}");
+
+            return userTasks ?? new List<TodoTask>();
+        }
     }
 }

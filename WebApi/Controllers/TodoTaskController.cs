@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApi.DataClass;
 using WebApi.Models;
 using WebApi.Services.Interfaces;
@@ -149,5 +150,25 @@ public class TodoTaskController : ControllerBase
         this.todoTaskDatabaseService.Update(todo);
 
         return this.NoContent();
+    }
+
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<IEnumerable<TodoTask>>> GetTasksForUser(string userId)
+    {
+        var tasks = this.todoTaskDatabaseService.GetAll();
+
+        var models = tasks.Select(item => new TodoTaskModel
+        {
+            Id = item.Id,
+            Title = item.Title,
+            Description = item.Description,
+            DueTo = item.DueTo,
+            CreatedAt = item.CreatedAt,
+            Status = item.Status,
+            TodoListId = item.TodoListId,
+            AssignedToId = item.AssignedToId,
+        }).Where(task => task.AssignedToId == userId).ToList();
+
+        return this.Ok(models);
     }
 }
