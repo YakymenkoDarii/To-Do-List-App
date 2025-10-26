@@ -1,7 +1,5 @@
 @model WebApp.Models.NewUserModel
 
-#pragma warning disable S6853
-
 @{
 	ViewData["Title"] = "Log in";
 }
@@ -18,14 +16,14 @@
 				<div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
 				<div class="form-group mb-3">
-					<label asp-for="UserName">UserName</label>
-					<input asp-for="UserName" class="form-control" />
+					<label for="UserName">User Name</label>
+					<input asp-for="UserName" id="UserName" class="form-control" />
 					<span asp-validation-for="UserName" class="text-danger"></span>
 				</div>
 
-				<div classs="form-group mb-3">
-					<label asp-for="Password">Password</label>
-					<input asp-for="Password" class="form-control" type="password" />
+				<div class="form-group mb-3">
+					<label for="Password">Password</label>
+					<input asp-for="Password" id="Password" class="form-control" type="password" />
 					<span asp-validation-for="Password" class="text-danger"></span>
 				</div>
 

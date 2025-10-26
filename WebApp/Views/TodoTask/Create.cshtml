@@ -1,13 +1,9 @@
 @model WebApp.Models.TodoTaskWebApiModel
 @using WebApp.DataClasses;
 
-
-#pragma warning disable S6853
-
 @{
 	ViewData["Title"] = "Create Task";
 }
-
 
 <h2>Create a New Task</h2>
 <hr />
@@ -19,32 +15,32 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 			<div class="form-group mb-3">
-				<label asp-for="Title" class="control-label">Title</label>
-				<input asp-for="Title" class="form-control" />
+				<label for="Title" class="control-label">Title</label>
+				<input asp-for="Title" id="Title" class="form-control" />
 				<span asp-validation-for="Title" class="text-danger"></span>
 			</div>
 
 			<div class="form-group mb-3">
-				<label asp-for="Description" class="control-label">Description</label>
-				<textarea asp-for="Description" class="form-control" rows="3"></textarea>
+				<label for="Description" class="control-label">Description</label>
+				<textarea asp-for="Description" id="Description" class="form-control" rows="3"></textarea>
 				<span asp-validation-for="Description" class="text-danger"></span>
 			</div>
 
 			<div class="form-group mb-3">
-				<label asp-for="DueTo" class="control-label">DueTo</label>
-				<input asp-for="DueTo" type="date" class="form-control" value="@Model.DueTo.ToString("yyyy-MM-dd")" />
+				<label for="DueTo" class="control-label">Due To</label>
+				<input asp-for="DueTo" id="DueTo" type="date" class="form-control" value="@Model.DueTo.ToString("yyyy-MM-dd")" />
 				<span asp-validation-for="DueTo" class="text-danger"></span>
 			</div>
 
 			<div class="form-group mb-3">
-				<label asp-for="Status" class="control-label">Status</label>
-				<select asp-for="Status" asp-items="Html.GetEnumSelectList<WebApp.DataClasses.TaskStatus>()" class="form-control"></select>
+				<label for="Status" class="control-label">Status</label>
+				<select asp-for="Status" id="Status" asp-items="Html.GetEnumSelectList<WebApp.DataClasses.TaskStatus>()" class="form-control"></select>
 				<span asp-validation-for="Status" class="text-danger"></span>
 			</div>
 
 			<div class="form-group mb-3">
-				<label asp-for="AssignedToUserName" class="control-label">AssignedToUserName</label>
-				<select asp-for="AssignedToUserName" asp-items="@Model.Users" class="form-control">
+				<label for="AssignedToUserName" class="control-label">Assigned To</label>
+				<select asp-for="AssignedToUserName" id="AssignedToUserName" asp-items="@Model.Users" class="form-control">
 					<option value="">-- Unassigned --</option>
 				</select>
 				<span asp-validation-for="AssignedToUserName" class="text-danger"></span>
