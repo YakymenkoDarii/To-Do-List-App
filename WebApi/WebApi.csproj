@@ -8,7 +8,7 @@
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <AnalysisLevel>latest</AnalysisLevel>
     <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-    <NoWarn>SA1200,IDE0058,IDE0055,CS8618,CA1062,CS8604,CA5404</NoWarn>
+    <NoWarn>SA1200,IDE0058,IDE0055,CS8618,CA1062,CS8604,CA5404,CA1002,CA2227,CA2234,CS1998,CS8601,CS8602,CS8766,S1075,S125,S2933,S4487,S4666,S6853,SA1000,SA1005,SA1101,SA1122,SA1309,SA1404,SA1413,SA1512,SA1515</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
